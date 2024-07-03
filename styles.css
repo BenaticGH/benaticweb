@@ -1,0 +1,54 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: "Trebuchet MS", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    z-index: 1;
+}
+
+.profile {
+    margin-bottom: 20px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    object-fit: cover;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 10px 0 20px 0;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: #fff;
+    background-color: #7E7E7E;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: bold;
+}
+
+.link:hover {
+    background-color: #4B4B4B;
+    transform: scale(1.1);
+}
