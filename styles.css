@@ -2,17 +2,73 @@ body {
     background-color: #000;
     color: #fff;
     font-family: "Trebuchet MS", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('background.gif') center center / cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.intro-content {
+    text-align: center;
+    color: #fff;
+}
+
+.spinner {
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+#typing-text {
+    margin-top: 20px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: .15em solid white;
+    animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white; }
+}
+
+.main-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 .container {
     text-align: center;
-    z-index: 1;
 }
 
 .profile {
