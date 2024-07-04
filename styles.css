@@ -8,6 +8,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .intro-screen {
@@ -162,4 +166,20 @@ h1 {
     width: 100%;
     height: 100%;
     z-index: 1;
+}
+
+/* Prevent text selection */
+*, *::before, *::after {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Allow text selection for specific elements if needed */
+.allow-select {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
 }
