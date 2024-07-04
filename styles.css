@@ -108,6 +108,11 @@ h1 {
     border-radius: 25px;
     transition: background-color 0.3s ease, transform 0.3s ease;
     font-weight: bold;
+    height: 20px; /* Set a fixed height */
+    line-height: 20px; /* Center the text vertically */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .link:hover {

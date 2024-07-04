@@ -1,4 +1,5 @@
 document.querySelectorAll('.link').forEach(item => {
+    item.textContent = ''; // Clear the button text initially
     item.addEventListener('mouseover', () => {
         item.style.transform = 'scale(1.1)';
     });
@@ -11,17 +12,33 @@ const introScreen = document.querySelector('.intro-screen');
 const mainContent = document.querySelector('.main-content');
 const audio = document.getElementById('background-music');
 const typingText = "click anywhere to enter";
+const benaticText = "benatic";
+const linkTexts = ["Spotify", "Bandcamp", "YouTube", "Instagram"];
 let i = 0;
+let j = 0;
 
-function typeWriter() {
-    if (i < typingText.length) {
-        document.getElementById("typing-text").innerHTML += typingText.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
+function typeWriter(text, element, index, callback, speed = 100) {
+    if (index < text.length) {
+        element.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(() => typeWriter(text, element, index, callback, speed), speed);
+    } else if (callback) {
+        callback();
     }
 }
 
-window.onload = typeWriter;
+function animateLinks(index) {
+    if (index < linkTexts.length) {
+        const link = document.querySelector(`.link:nth-child(${index + 1})`);
+        typeWriter(linkTexts[index], link, 0, () => {
+            setTimeout(() => animateLinks(index + 1), 50);
+        }, 50); // Faster typing speed for buttons
+    }
+}
+
+window.onload = () => {
+    typeWriter(typingText, document.getElementById("typing-text"), 0);
+};
 
 introScreen.addEventListener('click', () => {
     audio.volume = 0.1;
@@ -32,6 +49,9 @@ introScreen.addEventListener('click', () => {
         mainContent.style.display = 'block';
         setTimeout(() => {
             mainContent.style.opacity = '1';
+            typeWriter(benaticText, document.getElementById("benatic-text"), 0, () => {
+                setTimeout(() => animateLinks(0), 200);
+            });
         }, 50);
     }, 1000);
 });
