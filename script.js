@@ -10,7 +10,6 @@ document.querySelectorAll('.link').forEach(item => {
 const introScreen = document.querySelector('.intro-screen');
 const mainContent = document.querySelector('.main-content');
 const audio = document.getElementById('background-music');
-
 const typingText = "click anywhere to enter";
 let i = 0;
 
@@ -18,14 +17,14 @@ function typeWriter() {
     if (i < typingText.length) {
         document.getElementById("typing-text").innerHTML += typingText.charAt(i);
         i++;
-        setTimeout(typeWriter, 50);  // Speed up typing animation
+        setTimeout(typeWriter, 50);
     }
 }
 
 window.onload = typeWriter;
 
 introScreen.addEventListener('click', () => {
-    audio.volume = 0.1;  // Set volume to 10%
+    audio.volume = 0.1;
     audio.play();
     introScreen.style.opacity = '0';
     setTimeout(() => {
@@ -37,63 +36,94 @@ introScreen.addEventListener('click', () => {
     }, 1000);
 });
 
-// Cursor trail
-document.addEventListener('mousemove', (e) => {
+// Passive cursor trail
+function createDot(x, y) {
     const dot = document.createElement('div');
     dot.className = 'dot';
-    dot.style.left = `${e.pageX}px`;
-    dot.style.top = `${e.pageY}px`;
+    dot.style.left = `${x}px`;
+    dot.style.top = `${y}px`;
     document.body.appendChild(dot);
     setTimeout(() => {
         dot.remove();
-    }, 1000);  // Remove the dot after 1 second
+    }, 1000);
+}
+
+document.addEventListener('mousemove', (e) => {
+    createDot(e.pageX, e.pageY);
 });
 
-// Sparkle burst on click
-document.addEventListener('click', (e) => {
-    for (let i = 0; i < 10; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = `${e.pageX + (Math.random() * 20 - 10)}px`;
-        sparkle.style.top = `${e.pageY + (Math.random() * 20 - 10)}px`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => {
-            sparkle.remove();
-        }, 500);  // Remove the sparkle after the animation ends
-    }
-});
+// Drawing lines
+const canvas = document.getElementById('drawing-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let isDrawing = false;
 
-// Prevent text selection and highlighting interference
-document.addEventListener('mousedown', (e) => {
-    e.preventDefault();
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+function startDrawing(e) {
+    isDrawing = true;
+    draw(e);
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'lightgrey';
+
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX, e.clientY);
+}
+
+function stopDrawing() {
+    isDrawing = false;
+    ctx.beginPath();
+}
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 });
 
 // Mute button functionality
 const muteButton = document.getElementById('mute-button');
 const muteIcon = document.getElementById('mute-icon');
-
 muteButton.addEventListener('click', () => {
     if (audio.muted) {
         fadeAudio(audio, 0, 0.1, 1000);  // Fade in
         muteIcon.src = 'unmuted.svg';
+        audio.muted = false;
     } else {
         fadeAudio(audio, 0.1, 0, 1000);  // Fade out
         muteIcon.src = 'muted.svg';
     }
-    audio.muted = !audio.muted;
 });
 
 function fadeAudio(audio, from, to, duration) {
     const interval = 50;
     const step = (to - from) / (duration / interval);
     let volume = from;
-
     const fading = setInterval(() => {
         volume += step;
         if ((step > 0 && volume >= to) || (step < 0 && volume <= to)) {
             clearInterval(fading);
+            if (to === 0) {
+                audio.muted = true;
+            }
         } else {
             audio.volume = volume;
         }
     }, interval);
 }
+
+// Erase button functionality
+const eraseButton = document.getElementById('erase-button');
+eraseButton.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
