@@ -13,9 +13,7 @@ const mainContent = document.querySelector('.main-content');
 const audio = document.getElementById('background-music');
 const typingText = isMobile() ? "tap anywhere to enter" : "click anywhere to enter";
 const benaticText = "benatic";
-const linkTexts = ["Spotify", "Bandcamp", "YouTube", "Instagram"];
-let i = 0;
-let j = 0;
+const linkTexts = ["Spotify", "SoundCloud", "Bandcamp", "YouTube", "Instagram"];
 let introAnimationStarted = false;
 
 function isMobile() {
@@ -35,11 +33,14 @@ function typeWriter(text, element, index, callback, speed = 100) {
 function animateLinks(index) {
     if (index < linkTexts.length) {
         const link = document.querySelector(`.link:nth-child(${index + 1})`);
-        typeWriter(linkTexts[index], link, 0, () => {
-            if (index < linkTexts.length - 1) {
-                setTimeout(() => animateLinks(index + 1), linkTexts[index].length * 25); // Start halfway through
-            }
-        }, 50);
+        let delay = index === 0 ? 0 : linkTexts[index - 1].length * 2; // Delay based on previous word length
+        setTimeout(() => {
+            typeWriter(linkTexts[index], link, 0, () => {
+                if (index < linkTexts.length - 1) {
+                    animateLinks(index + 1);
+                }
+            }, 25);
+        }, delay);
     }
 }
 
@@ -59,8 +60,8 @@ introScreen.addEventListener('click', () => {
             setTimeout(() => {
                 mainContent.style.opacity = '1';
                 typeWriter(benaticText, document.getElementById("benatic-text"), 0, () => {
-                    setTimeout(() => animateLinks(0), 200);
-                });
+                    setTimeout(() => animateLinks(0), 100);
+                }, 50);
             }, 50);
         }, 1000);
     }
@@ -175,4 +176,17 @@ eraseButton.addEventListener('click', () => {
 // Show erase button on mobile
 if (isMobile()) {
     eraseButton.style.display = 'block';
+}
+
+// Stop music when mobile users exit the browser app
+if (isMobile()) {
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+            audio.pause();
+        } else {
+            if (!audio.muted) {
+                audio.play();
+            }
+        }
+    });
 }

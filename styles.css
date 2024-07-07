@@ -13,7 +13,6 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
 }
-
 .intro-screen {
     position: fixed;
     top: 0;
@@ -29,7 +28,6 @@ body {
     opacity: 1;
     transition: opacity 1s ease-in-out;
 }
-
 .intro-screen::before {
     content: "";
     position: absolute;
@@ -40,25 +38,21 @@ body {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
-
 .intro-content {
     text-align: center;
     color: #fff;
     position: relative;
     z-index: 1001;
 }
-
 .spinner {
     width: 100px;
     height: 100px;
     animation: spin 2s linear infinite;
 }
-
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
 #typing-text {
     margin-top: 20px;
     font-size: 18px;
@@ -67,17 +61,14 @@ body {
     border-right: .15em solid white;
     animation: typing 1.5s steps(30, end), blink-caret .75s step-end infinite;
 }
-
 @keyframes typing {
     from { width: 0 }
     to { width: 100% }
 }
-
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: white; }
 }
-
 .main-content {
     display: none;
     opacity: 0;
@@ -85,15 +76,12 @@ body {
     position: relative;
     z-index: 2;
 }
-
 .container {
     text-align: center;
 }
-
 .profile {
     margin-bottom: 20px;
 }
-
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -101,18 +89,15 @@ body {
     border: 5px solid #fff;
     object-fit: cover;
 }
-
 h1 {
     font-size: 24px;
     margin: 10px 0 20px 0;
 }
-
 .links {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
 .link {
     text-decoration: none;
     color: #fff;
@@ -127,12 +112,10 @@ h1 {
     align-items: center;
     justify-content: center;
 }
-
 .link:hover {
     background-color: #4B4B4B;
     transform: scale(1.1);
 }
-
 .dot {
     position: absolute;
     width: 5px;
@@ -142,14 +125,12 @@ h1 {
     pointer-events: none;
     animation: fadeOut 1s linear forwards;
 }
-
 @keyframes fadeOut {
     to {
         opacity: 0;
         transform: scale(0.5);
     }
 }
-
 .controls {
     position: fixed;
     bottom: 20px;
@@ -157,7 +138,6 @@ h1 {
     display: flex;
     gap: 10px;
 }
-
 .controls-left {
     position: fixed;
     bottom: 20px;
@@ -165,18 +145,15 @@ h1 {
     display: flex;
     gap: 10px;
 }
-
 .mute-button, .erase-button {
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
-
 .mute-button img, .erase-button img {
     width: 100%;
     height: 100%;
 }
-
 #drawing-canvas {
     position: fixed;
     top: 0;
@@ -185,7 +162,6 @@ h1 {
     height: 100%;
     z-index: 1;
 }
-
 /* Prevent text selection */
 *, *::before, *::after {
     user-select: none;
@@ -193,7 +169,6 @@ h1 {
     -moz-user-select: none;
     -ms-user-select: none;
 }
-
 /* Allow text selection for specific elements if needed */
 .allow-select {
     user-select: text;
@@ -201,9 +176,8 @@ h1 {
     -moz-user-select: text;
     -ms-user-select: text;
 }
-
 @media (max-width: 768px) {
     .erase-button {
-        display: block; /* Changed from 'none' to 'block' */
+        display: block;
     }
 }
