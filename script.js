@@ -13,7 +13,7 @@ const mainContent = document.querySelector('.main-content');
 const audio = document.getElementById('background-music');
 const typingText = isMobile() ? "tap anywhere to enter" : "click anywhere to enter";
 const benaticText = "benatic";
-const linkTexts = ["Spotify", "SoundCloud", "Bandcamp", "YouTube", "Instagram"];
+const linkTexts = ["Spotify", "Apple Music", "SoundCloud", "YouTube", "Instagram"];
 let introAnimationStarted = false;
 
 function isMobile() {
@@ -190,3 +190,110 @@ if (isMobile()) {
         }
     });
 }
+
+document.querySelectorAll('.link').forEach(item => {
+    item.textContent = '';
+    item.addEventListener('mouseover', () => {
+        item.style.transform = 'scale(1.1)';
+    });
+    item.addEventListener('mouseout', () => {
+        item.style.transform = 'scale(1)';
+    });
+});
+
+const milkTeaLinks = [
+    "https://open.spotify.com/track/3YVZERsqslbwCaz0UxGG77?si=1284d8052321402f",
+    "https://music.apple.com/us/album/milk-tea/1787071523?i=1787071524",
+    "https://soundcloud.com/benatic-music",
+    "https://www.youtube.com/@benatic",
+    "https://www.instagram.com/p/DEAoR-HyeKL/"
+];
+
+const originalLinks = [
+    "https://open.spotify.com/artist/5u3yx37LtLAM7fiyrZVhn7?si=RUit4ctWSx6qvZPCfCothA",
+    "https://music.apple.com/us/artist/benatic/1786818621",
+    "https://soundcloud.com/benatic-music",
+    "https://www.youtube.com/@benatic",
+    "https://instagram.com/benaticmusic/"
+];
+
+let isInMilkTeaMode = false;
+
+function switchProfiles() {
+    const mainProfile = document.getElementById('main-profile');
+    const milkTeaCover = document.getElementById('milk-tea-cover');
+    const benaticText = document.getElementById('benatic-text');
+    const links = document.querySelectorAll('.link');
+    const announcement = document.querySelector('.announcement-text');
+    
+    // Fade out both images
+    mainProfile.style.opacity = '0';
+    milkTeaCover.style.opacity = '0';
+
+    // Handle announcement text visibility immediately
+    if (isInMilkTeaMode) {
+        // If we're currently in milk tea mode, going back to main mode
+        announcement.classList.remove('hidden');
+        announcement.style.opacity = '1';
+    } else {
+        // If we're going to milk tea mode
+        announcement.style.opacity = '0';
+        setTimeout(() => {
+            announcement.classList.add('hidden');
+        }, 500);
+    }
+
+    setTimeout(() => {
+        // Swap images
+        const tempSrc = mainProfile.src;
+        mainProfile.src = milkTeaCover.src;
+        milkTeaCover.src = tempSrc;
+
+        // Update spinning class - only apply to milk tea cover image
+        mainProfile.classList.remove('spinning');
+        milkTeaCover.classList.remove('spinning');
+        if (milkTeaCover.src.includes('milk-tea-cover.png')) {
+            milkTeaCover.classList.add('spinning');
+        }
+        if (mainProfile.src.includes('milk-tea-cover.png')) {
+            mainProfile.classList.add('spinning');
+        }
+        
+        // Fade in both images
+        mainProfile.style.opacity = '1';
+        milkTeaCover.style.opacity = '1';
+        
+        // Update state and menu
+        isInMilkTeaMode = !isInMilkTeaMode;
+        
+        // Clear existing text
+        benaticText.innerHTML = '';
+        links.forEach(link => link.textContent = '');
+        
+        // Type new text
+        typeWriter(isInMilkTeaMode ? "milk tea" : "benatic", benaticText, 0, () => {
+            setTimeout(() => {
+                const currentLinks = isInMilkTeaMode ? milkTeaLinks : originalLinks;
+                links.forEach((link, index) => {
+                    link.href = currentLinks[index];
+                });
+                animateLinks(0);
+            }, 100);
+        }, 50);
+    }, 500);
+}
+
+// Add touchstart event listeners for mobile
+document.getElementById('main-profile').addEventListener('touchstart', switchProfiles);
+document.getElementById('milk-tea-cover').addEventListener('touchstart', switchProfiles);
+
+// Prevent default touch behavior for smooth mobile experience
+document.addEventListener('touchmove', function(e) {
+    if (e.target.classList.contains('profile-pic')) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// Add click event listeners to both profile images
+document.getElementById('main-profile').addEventListener('click', switchProfiles);
+document.getElementById('milk-tea-cover').addEventListener('click', switchProfiles);
