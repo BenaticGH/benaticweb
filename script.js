@@ -158,29 +158,27 @@ function switchProfiles() {
     const links = document.querySelectorAll('.link');
     const announcements = document.querySelectorAll('.announcement-text');
     
+    // First phase: fade out current state
     mainProfile.style.opacity = '0';
     milkTeaCover.style.opacity = '0';
     
-    // Handle announcement visibility based on mode
-    if (isInMilkTeaMode) {
-        // Switching back to benatic mode
-        announcements.forEach(announcement => {
-            announcement.style.opacity = '1';
-        });
-    } else {
-        // Switching to milk tea mode
+    // Handle announcement text visibility
+    if (!isInMilkTeaMode) {
+        // We're switching TO milk tea mode, so hide announcements
         announcements.forEach(announcement => {
             announcement.style.opacity = '0';
         });
     }
     
     setTimeout(() => {
+        // Second phase: swap images and update spinning states
         const tempSrc = mainProfile.src;
         mainProfile.src = milkTeaCover.src;
         milkTeaCover.src = tempSrc;
 
         mainProfile.classList.remove('spinning');
         milkTeaCover.classList.remove('spinning');
+        
         if (milkTeaCover.src.includes('milk-tea-cover.png')) {
             milkTeaCover.classList.add('spinning');
         }
@@ -188,11 +186,21 @@ function switchProfiles() {
             mainProfile.classList.add('spinning');
         }
         
+        // Show images again
         mainProfile.style.opacity = '1';
         milkTeaCover.style.opacity = '1';
         
+        // Update mode state
         isInMilkTeaMode = !isInMilkTeaMode;
         
+        // If we're switching BACK to benatic mode, show announcements
+        if (!isInMilkTeaMode) {
+            announcements.forEach(announcement => {
+                announcement.style.opacity = '1';
+            });
+        }
+        
+        // Update text and links
         benaticText.innerHTML = '';
         links.forEach(link => link.textContent = '');
         

@@ -236,9 +236,9 @@ body {
 @media (max-width: 768px) {
     .content-wrapper {
         flex-direction: column;
-        gap: 15px;  /* Reduced gap to shift content up */
+        gap: 15px;
         padding: 0 20px;
-        margin-top: -40px;  /* Shift everything up */
+        margin-top: -40px;
     }
 
     .side-content {
@@ -247,11 +247,11 @@ body {
 
     .mobile-side-content {
         display: flex;
-        margin-top: 10px;  /* Reduced margin to shift up */
+        margin-top: 20px;  /* Increased gap after Instagram button */
     }
 
     .profile {
-        margin-bottom: 15px;  /* Reduced margin to shift up */
+        margin-bottom: 15px;
     }
 
     .profile-pic {
@@ -260,17 +260,17 @@ body {
     }
 
     .links {
-        width: 90%;  /* Reduced width */
+        width: 85%;  /* Further reduced width for buttons */
         margin: 0 auto;
     }
 
     .link {
-        padding: 6px 15px;  /* Reduced horizontal padding */
+        padding: 6px 12px;  /* Slightly reduced horizontal padding */
         font-size: 15px;
         height: 18px;
-        min-width: 120px;  /* Ensure minimum width for "Apple Music" */
-        max-width: 200px;  /* Limit maximum width */
-        margin: 0 auto;  /* Center the links */
+        min-width: 110px;  /* Adjusted minimum width */
+        max-width: 180px;  /* Adjusted maximum width */
+        margin: 0 auto;
     }
 
     .controls, .controls-left {
@@ -299,19 +299,20 @@ body {
         margin-top: 8px;
         font-size: 14px;
         transition: opacity 0.5s ease-in-out;
-        margin-bottom: 15px;  /* Add space at bottom */
+        margin-bottom: 15px;
+        opacity: 1;  /* Set default opacity */
     }
 
     #mobile-milk-tea-cover {
-        width: 80px;  /* Smaller cover image */
+        width: 80px;
         height: 80px;
     }
 
     .main-section {
-        margin-bottom: 20px;  /* Add space at bottom of main section */
+        margin-bottom: 20px;
     }
 
     #benatic-text {
-        margin: 10px 0;  /* Adjust heading margins */
+        margin: 10px 0;
     }
 }
