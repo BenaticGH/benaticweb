@@ -37,7 +37,6 @@ function animateLinks(index) {
     }
 }
 
-// Create dots for cursor trail
 function createDot(x, y) {
     const dot = document.createElement('div');
     dot.className = 'dot';
@@ -49,28 +48,13 @@ function createDot(x, y) {
     }, 1000);
 }
 
-// Add mousemove event listener for cursor trail
 document.addEventListener('mousemove', (e) => {
     createDot(e.pageX, e.pageY);
 });
 
 window.onload = () => {
     typeWriter(typingText, document.getElementById("typing-text"), 0);
-    if (isMobile()) {
-        setupMobileLayout();
-    }
 };
-
-function setupMobileLayout() {
-    const sideContent = document.querySelector('.side-content');
-    const mainSection = document.querySelector('.main-section');
-    const announcement = document.querySelector('.announcement-text');
-    
-    sideContent.style.display = 'none';
-    announcement.classList.remove('hidden');
-    announcement.style.marginTop = '20px';
-    mainSection.after(announcement);
-}
 
 introScreen.addEventListener('click', () => {
     if (!introAnimationStarted) {
@@ -165,19 +149,21 @@ const originalLinks = [
 let isInMilkTeaMode = false;
 
 function switchProfiles() {
-    if (isMobile() || isAnimating) return;
+    if (isAnimating) return;
     
     isAnimating = true;
     const mainProfile = document.getElementById('main-profile');
-    const milkTeaCover = document.getElementById('milk-tea-cover');
+    const milkTeaCover = isMobile() ? document.getElementById('mobile-milk-tea-cover') : document.getElementById('milk-tea-cover');
     const benaticText = document.getElementById('benatic-text');
     const links = document.querySelectorAll('.link');
-    const announcement = document.querySelector('.announcement-text');
+    const announcements = document.querySelectorAll('.announcement-text');
     
     mainProfile.style.opacity = '0';
     milkTeaCover.style.opacity = '0';
     
-    announcement.style.opacity = isInMilkTeaMode ? '1' : '0';
+    announcements.forEach(announcement => {
+        announcement.style.opacity = isInMilkTeaMode ? '1' : '0';
+    });
     
     setTimeout(() => {
         const tempSrc = mainProfile.src;
@@ -232,6 +218,8 @@ eraseButton.addEventListener('click', () => {
 
 if (isMobile()) {
     eraseButton.style.display = 'block';
+    document.getElementById('main-profile').addEventListener('click', switchProfiles);
+    document.getElementById('mobile-milk-tea-cover').addEventListener('click', switchProfiles);
     document.addEventListener("visibilitychange", function() {
         if (document.hidden) {
             audio.pause();
@@ -241,9 +229,7 @@ if (isMobile()) {
             }
         }
     });
-}
-
-if (!isMobile()) {
+} else {
     document.getElementById('main-profile').addEventListener('click', switchProfiles);
     document.getElementById('milk-tea-cover').addEventListener('click', switchProfiles);
 }
