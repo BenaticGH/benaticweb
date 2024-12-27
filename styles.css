@@ -13,6 +13,7 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
 }
+
 .intro-screen {
     position: fixed;
     top: 0;
@@ -28,6 +29,7 @@ body {
     opacity: 1;
     transition: opacity 1s ease-in-out;
 }
+
 .intro-screen::before {
     content: "";
     position: absolute;
@@ -38,21 +40,20 @@ body {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
+
 .intro-content {
     text-align: center;
     color: #fff;
     position: relative;
     z-index: 1001;
 }
+
 .spinner {
     width: 100px;
     height: 100px;
     animation: spin 2s linear infinite;
 }
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+
 #typing-text {
     margin-top: 20px;
     font-size: 18px;
@@ -61,14 +62,17 @@ body {
     border-right: .15em solid white;
     animation: typing 1.5s steps(30, end), blink-caret .75s step-end infinite;
 }
+
 @keyframes typing {
     from { width: 0 }
     to { width: 100% }
 }
+
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: white; }
 }
+
 .main-content {
     display: none;
     opacity: 0;
@@ -76,110 +80,9 @@ body {
     position: relative;
     z-index: 2;
 }
+
 .container {
     text-align: center;
-}
-.profile {
-    margin-bottom: 20px;
-}
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 5px solid #fff;
-    object-fit: cover;
-}
-h1 {
-    font-size: 24px;
-    margin: 10px 0 20px 0;
-}
-.links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.link {
-    text-decoration: none;
-    color: #fff;
-    background-color: #7E7E7E;
-    padding: 10px 20px;
-    border-radius: 25px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-weight: bold;
-    height: 20px;
-    line-height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.link:hover {
-    background-color: #4B4B4B;
-    transform: scale(1.1);
-}
-.dot {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background-color: lightgrey;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: fadeOut 1s linear forwards;
-}
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-}
-.controls {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-}
-.controls-left {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    gap: 10px;
-}
-.mute-button, .erase-button {
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-}
-.mute-button img, .erase-button img {
-    width: 100%;
-    height: 100%;
-}
-#drawing-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-/* Prevent text selection */
-*, *::before, *::after {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-/* Allow text selection for specific elements if needed */
-.allow-select {
-    user-select: text;
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-}
-@media (max-width: 768px) {
-    .erase-button {
-        display: block;
-    }
 }
 
 .content-wrapper {
@@ -203,6 +106,10 @@ h1 {
     margin-left: 50px;
 }
 
+.profile {
+    margin-bottom: 20px;
+}
+
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -212,21 +119,109 @@ h1 {
     transition: opacity 0.5s ease-in-out;
 }
 
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: #fff;
+    background-color: #7E7E7E;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link:hover {
+    background-color: #4B4B4B;
+    transform: scale(1.1);
+}
+
+.dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: lightgrey;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fadeOut 1s linear forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
 .announcement-text {
     color: white;
     margin-top: 10px;
     font-weight: bold;
     animation: pulse 2s ease-in-out infinite;
-    opacity: 1;
     transition: opacity 0.5s ease-in-out;
+    text-align: center;
 }
 
-.announcement-text.hidden {
-    opacity: 0;
-    pointer-events: none;
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
 }
 
-/* Mobile Styles */
+.controls-left {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.mute-button, .erase-button {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.mute-button img, .erase-button img {
+    width: 100%;
+    height: 100%;
+}
+
+#drawing-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.spinning {
+    animation: spin 1.8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
 @media (max-width: 768px) {
     .content-wrapper {
         flex-direction: column;
@@ -234,9 +229,7 @@ h1 {
     }
 
     .side-content {
-        position: static;
-        margin-left: 0;
-        margin-top: 20px;
+        display: none;
     }
 
     .profile-pic {
@@ -267,36 +260,17 @@ h1 {
         padding: 20px;
     }
 
-    #typing-text {
-        font-size: 16px;
-    }
-
     .spinner {
         width: 80px;
         height: 80px;
     }
-}
 
-/* Keep existing animations */
-@keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
-}
+    .erase-button {
+        display: block;
+    }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.fade-out {
-    opacity: 0;
-}
-
-.fade-in {
-    opacity: 1;
-}
-
-.spinning {
-    animation: spin 1.8s linear infinite;
+    .announcement-text {
+        margin-top: 20px;
+        font-size: 16px;
+    }
 }

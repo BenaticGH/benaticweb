@@ -1,13 +1,3 @@
-document.querySelectorAll('.link').forEach(item => {
-    item.textContent = '';
-    item.addEventListener('mouseover', () => {
-        item.style.transform = 'scale(1.1)';
-    });
-    item.addEventListener('mouseout', () => {
-        item.style.transform = 'scale(1)';
-    });
-});
-
 const introScreen = document.querySelector('.intro-screen');
 const mainContent = document.querySelector('.main-content');
 const audio = document.getElementById('background-music');
@@ -15,6 +5,7 @@ const typingText = isMobile() ? "tap anywhere to enter" : "click anywhere to ent
 const benaticText = "benatic";
 const linkTexts = ["Spotify", "Apple Music", "SoundCloud", "YouTube", "Instagram"];
 let introAnimationStarted = false;
+let isAnimating = false;
 
 function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -26,6 +17,7 @@ function typeWriter(text, element, index, callback, speed = 100) {
         index++;
         setTimeout(() => typeWriter(text, element, index, callback, speed), speed);
     } else if (callback) {
+        isAnimating = false;
         callback();
     }
 }
@@ -33,8 +25,9 @@ function typeWriter(text, element, index, callback, speed = 100) {
 function animateLinks(index) {
     if (index < linkTexts.length) {
         const link = document.querySelector(`.link:nth-child(${index + 1})`);
-        let delay = index === 0 ? 0 : linkTexts[index - 1].length * 2; // Delay based on previous word length
+        let delay = index === 0 ? 0 : linkTexts[index - 1].length * 2;
         setTimeout(() => {
+            link.textContent = '';
             typeWriter(linkTexts[index], link, 0, () => {
                 if (index < linkTexts.length - 1) {
                     animateLinks(index + 1);
@@ -44,9 +37,40 @@ function animateLinks(index) {
     }
 }
 
+// Create dots for cursor trail
+function createDot(x, y) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.style.left = `${x}px`;
+    dot.style.top = `${y}px`;
+    document.body.appendChild(dot);
+    setTimeout(() => {
+        dot.remove();
+    }, 1000);
+}
+
+// Add mousemove event listener for cursor trail
+document.addEventListener('mousemove', (e) => {
+    createDot(e.pageX, e.pageY);
+});
+
 window.onload = () => {
     typeWriter(typingText, document.getElementById("typing-text"), 0);
+    if (isMobile()) {
+        setupMobileLayout();
+    }
 };
+
+function setupMobileLayout() {
+    const sideContent = document.querySelector('.side-content');
+    const mainSection = document.querySelector('.main-section');
+    const announcement = document.querySelector('.announcement-text');
+    
+    sideContent.style.display = 'none';
+    announcement.classList.remove('hidden');
+    announcement.style.marginTop = '20px';
+    mainSection.after(announcement);
+}
 
 introScreen.addEventListener('click', () => {
     if (!introAnimationStarted) {
@@ -59,6 +83,7 @@ introScreen.addEventListener('click', () => {
             mainContent.style.display = 'block';
             setTimeout(() => {
                 mainContent.style.opacity = '1';
+                document.querySelectorAll('.link').forEach(link => link.textContent = '');
                 typeWriter(benaticText, document.getElementById("benatic-text"), 0, () => {
                     setTimeout(() => animateLinks(0), 100);
                 }, 50);
@@ -67,23 +92,6 @@ introScreen.addEventListener('click', () => {
     }
 });
 
-// Passive cursor trail
-function createDot(x, y) {
-    const dot = document.createElement('div');
-    dot.className = 'dot';
-    dot.style.left = `${x}px`;
-    dot.style.top = `${y}px`;
-    document.body.appendChild(dot);
-    setTimeout(() => {
-        dot.remove();
-    }, 1000);
-}
-
-document.addEventListener('mousemove', (e) => {
-    createDot(e.pageX, e.pageY);
-});
-
-// Drawing lines
 const canvas = document.getElementById('drawing-canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -136,71 +144,8 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-// Mute button functionality
 const muteButton = document.getElementById('mute-button');
 const muteIcon = document.getElementById('mute-icon');
-muteButton.addEventListener('click', () => {
-    if (audio.muted) {
-        fadeAudio(audio, 0, 0.1, 1000);
-        muteIcon.src = 'unmuted.svg';
-        audio.muted = false;
-    } else {
-        fadeAudio(audio, 0.1, 0, 1000);
-        muteIcon.src = 'muted.svg';
-    }
-});
-
-function fadeAudio(audio, from, to, duration) {
-    const interval = 50;
-    const step = (to - from) / (duration / interval);
-    let volume = from;
-    const fading = setInterval(() => {
-        volume += step;
-        if ((step > 0 && volume >= to) || (step < 0 && volume <= to)) {
-            clearInterval(fading);
-            if (to === 0) {
-                audio.muted = true;
-            }
-        } else {
-            audio.volume = volume;
-        }
-    }, interval);
-}
-
-// Erase button functionality
-const eraseButton = document.getElementById('erase-button');
-eraseButton.addEventListener('click', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-// Show erase button on mobile
-if (isMobile()) {
-    eraseButton.style.display = 'block';
-}
-
-// Stop music when mobile users exit the browser app
-if (isMobile()) {
-    document.addEventListener("visibilitychange", function() {
-        if (document.hidden) {
-            audio.pause();
-        } else {
-            if (!audio.muted) {
-                audio.play();
-            }
-        }
-    });
-}
-
-document.querySelectorAll('.link').forEach(item => {
-    item.textContent = '';
-    item.addEventListener('mouseover', () => {
-        item.style.transform = 'scale(1.1)';
-    });
-    item.addEventListener('mouseout', () => {
-        item.style.transform = 'scale(1)';
-    });
-});
-
 const milkTeaLinks = [
     "https://open.spotify.com/track/3YVZERsqslbwCaz0UxGG77?si=1284d8052321402f",
     "https://music.apple.com/us/album/milk-tea/1787071523?i=1787071524",
@@ -220,36 +165,25 @@ const originalLinks = [
 let isInMilkTeaMode = false;
 
 function switchProfiles() {
+    if (isMobile() || isAnimating) return;
+    
+    isAnimating = true;
     const mainProfile = document.getElementById('main-profile');
     const milkTeaCover = document.getElementById('milk-tea-cover');
     const benaticText = document.getElementById('benatic-text');
     const links = document.querySelectorAll('.link');
     const announcement = document.querySelector('.announcement-text');
     
-    // Fade out both images
     mainProfile.style.opacity = '0';
     milkTeaCover.style.opacity = '0';
-
-    // Handle announcement text visibility immediately
-    if (isInMilkTeaMode) {
-        // If we're currently in milk tea mode, going back to main mode
-        announcement.classList.remove('hidden');
-        announcement.style.opacity = '1';
-    } else {
-        // If we're going to milk tea mode
-        announcement.style.opacity = '0';
-        setTimeout(() => {
-            announcement.classList.add('hidden');
-        }, 500);
-    }
-
+    
+    announcement.style.opacity = isInMilkTeaMode ? '1' : '0';
+    
     setTimeout(() => {
-        // Swap images
         const tempSrc = mainProfile.src;
         mainProfile.src = milkTeaCover.src;
         milkTeaCover.src = tempSrc;
 
-        // Update spinning class - only apply to milk tea cover image
         mainProfile.classList.remove('spinning');
         milkTeaCover.classList.remove('spinning');
         if (milkTeaCover.src.includes('milk-tea-cover.png')) {
@@ -259,18 +193,14 @@ function switchProfiles() {
             mainProfile.classList.add('spinning');
         }
         
-        // Fade in both images
         mainProfile.style.opacity = '1';
         milkTeaCover.style.opacity = '1';
         
-        // Update state and menu
         isInMilkTeaMode = !isInMilkTeaMode;
         
-        // Clear existing text
         benaticText.innerHTML = '';
         links.forEach(link => link.textContent = '');
         
-        // Type new text
         typeWriter(isInMilkTeaMode ? "milk tea" : "benatic", benaticText, 0, () => {
             setTimeout(() => {
                 const currentLinks = isInMilkTeaMode ? milkTeaLinks : originalLinks;
@@ -283,17 +213,37 @@ function switchProfiles() {
     }, 500);
 }
 
-// Add touchstart event listeners for mobile
-document.getElementById('main-profile').addEventListener('touchstart', switchProfiles);
-document.getElementById('milk-tea-cover').addEventListener('touchstart', switchProfiles);
-
-// Prevent default touch behavior for smooth mobile experience
-document.addEventListener('touchmove', function(e) {
-    if (e.target.classList.contains('profile-pic')) {
-        e.preventDefault();
+muteButton.addEventListener('click', () => {
+    if (audio.muted) {
+        audio.volume = 0.1;
+        muteIcon.src = 'unmuted.svg';
+        audio.muted = false;
+    } else {
+        audio.volume = 0;
+        muteIcon.src = 'muted.svg';
+        audio.muted = true;
     }
-}, { passive: false });
+});
 
-// Add click event listeners to both profile images
-document.getElementById('main-profile').addEventListener('click', switchProfiles);
-document.getElementById('milk-tea-cover').addEventListener('click', switchProfiles);
+const eraseButton = document.getElementById('erase-button');
+eraseButton.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+if (isMobile()) {
+    eraseButton.style.display = 'block';
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+            audio.pause();
+        } else {
+            if (!audio.muted) {
+                audio.play();
+            }
+        }
+    });
+}
+
+if (!isMobile()) {
+    document.getElementById('main-profile').addEventListener('click', switchProfiles);
+    document.getElementById('milk-tea-cover').addEventListener('click', switchProfiles);
+}
