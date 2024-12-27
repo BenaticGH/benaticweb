@@ -156,48 +156,47 @@ function switchProfiles() {
     const milkTeaCover = isMobile() ? document.getElementById('mobile-milk-tea-cover') : document.getElementById('milk-tea-cover');
     const benaticText = document.getElementById('benatic-text');
     const links = document.querySelectorAll('.link');
-    const announcements = document.querySelectorAll('.announcement-text');
     
-    // First phase: fade out current state
+    // Get both desktop and mobile announcements
+    const desktopAnnouncement = document.querySelector('.side-content .announcement-text');
+    const mobileAnnouncement = document.querySelector('.mobile-side-content .announcement-text');
+    const announcements = [desktopAnnouncement, mobileAnnouncement].filter(Boolean);
+    
+    // First phase: fade out everything
     mainProfile.style.opacity = '0';
     milkTeaCover.style.opacity = '0';
     
-    // Handle announcement text visibility
-    if (!isInMilkTeaMode) {
-        // We're switching TO milk tea mode, so hide announcements
-        announcements.forEach(announcement => {
-            announcement.style.opacity = '0';
-        });
-    }
+    // Fade out announcements when switching to milk tea mode
+    announcements.forEach(announcement => {
+        announcement.style.transition = 'opacity 0.5s ease-in-out';
+        announcement.style.opacity = isInMilkTeaMode ? '1' : '0';
+    });
     
     setTimeout(() => {
-        // Second phase: swap images and update spinning states
+        // Swap profile images
         const tempSrc = mainProfile.src;
         mainProfile.src = milkTeaCover.src;
         milkTeaCover.src = tempSrc;
 
-        mainProfile.classList.remove('spinning');
-        milkTeaCover.classList.remove('spinning');
+        // Handle spinning animation classes
+        mainProfile.classList.toggle('spinning', mainProfile.src.includes('milk-tea-cover.png'));
+        milkTeaCover.classList.toggle('spinning', milkTeaCover.src.includes('milk-tea-cover.png'));
         
-        if (milkTeaCover.src.includes('milk-tea-cover.png')) {
-            milkTeaCover.classList.add('spinning');
-        }
-        if (mainProfile.src.includes('milk-tea-cover.png')) {
-            mainProfile.classList.add('spinning');
-        }
-        
-        // Show images again
+        // Show images
         mainProfile.style.opacity = '1';
         milkTeaCover.style.opacity = '1';
         
-        // Update mode state
+        // Update mode
         isInMilkTeaMode = !isInMilkTeaMode;
         
-        // If we're switching BACK to benatic mode, show announcements
+        // If switching back to benatic mode, show announcements
         if (!isInMilkTeaMode) {
-            announcements.forEach(announcement => {
-                announcement.style.opacity = '1';
-            });
+            setTimeout(() => {
+                announcements.forEach(announcement => {
+                    announcement.style.transition = 'opacity 0.5s ease-in-out';
+                    announcement.style.opacity = '1';
+                });
+            }, 300); // Slight delay to ensure smooth transition
         }
         
         // Update text and links
@@ -211,6 +210,7 @@ function switchProfiles() {
                     link.href = currentLinks[index];
                 });
                 animateLinks(0);
+                isAnimating = false;
             }, 100);
         }, 50);
     }, 500);
