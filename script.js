@@ -161,9 +161,18 @@ function switchProfiles() {
     mainProfile.style.opacity = '0';
     milkTeaCover.style.opacity = '0';
     
-    announcements.forEach(announcement => {
-        announcement.style.opacity = isInMilkTeaMode ? '1' : '0';
-    });
+    // Handle announcement visibility based on mode
+    if (isInMilkTeaMode) {
+        // Switching back to benatic mode
+        announcements.forEach(announcement => {
+            announcement.style.opacity = '1';
+        });
+    } else {
+        // Switching to milk tea mode
+        announcements.forEach(announcement => {
+            announcement.style.opacity = '0';
+        });
+    }
     
     setTimeout(() => {
         const tempSrc = mainProfile.src;

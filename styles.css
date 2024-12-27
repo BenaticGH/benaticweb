@@ -236,8 +236,9 @@ body {
 @media (max-width: 768px) {
     .content-wrapper {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;  /* Reduced gap to shift content up */
         padding: 0 20px;
+        margin-top: -40px;  /* Shift everything up */
     }
 
     .side-content {
@@ -246,6 +247,11 @@ body {
 
     .mobile-side-content {
         display: flex;
+        margin-top: 10px;  /* Reduced margin to shift up */
+    }
+
+    .profile {
+        margin-bottom: 15px;  /* Reduced margin to shift up */
     }
 
     .profile-pic {
@@ -254,14 +260,17 @@ body {
     }
 
     .links {
-        width: 100%;
+        width: 90%;  /* Reduced width */
         margin: 0 auto;
     }
 
     .link {
-        padding: 8px 20px;
-        font-size: 16px;
+        padding: 6px 15px;  /* Reduced horizontal padding */
+        font-size: 15px;
         height: 18px;
+        min-width: 120px;  /* Ensure minimum width for "Apple Music" */
+        max-width: 200px;  /* Limit maximum width */
+        margin: 0 auto;  /* Center the links */
     }
 
     .controls, .controls-left {
@@ -287,12 +296,22 @@ body {
     }
 
     .announcement-text {
-        margin-top: 10px;
-        font-size: 16px;
+        margin-top: 8px;
+        font-size: 14px;
+        transition: opacity 0.5s ease-in-out;
+        margin-bottom: 15px;  /* Add space at bottom */
     }
 
     #mobile-milk-tea-cover {
-        width: 100px;
-        height: 100px;
+        width: 80px;  /* Smaller cover image */
+        height: 80px;
+    }
+
+    .main-section {
+        margin-bottom: 20px;  /* Add space at bottom of main section */
+    }
+
+    #benatic-text {
+        margin: 10px 0;  /* Adjust heading margins */
     }
 }
